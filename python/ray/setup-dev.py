@@ -23,12 +23,14 @@ def do_link(package, force=False, local_path=""):
             default=True):
         return
     if os.access(os.path.dirname(package_home), os.W_OK):
-        subprocess.check_call(["rm", "-rf", package_home])
+        # subprocess.check_call(["rm", "-rf", package_home])
+        subprocess.check_call(["mv", package_home, package_home+'_orig'])
         subprocess.check_call(["ln", "-s", local_home, package_home])
     else:
         print("You don't have write permission to {}, using sudo:".format(
             package_home))
-        subprocess.check_call(["sudo", "rm", "-rf", package_home])
+        # subprocess.check_call(["sudo", "rm", "-rf", package_home])
+        subprocess.check_call(["sudo", "mv", package_home, package_home + '_orig'])
         subprocess.check_call(["sudo", "ln", "-s", local_home, package_home])
 
 
@@ -45,7 +47,7 @@ if __name__ == "__main__":
     do_link("autoscaler", force=args.yes)
     do_link("scripts", force=args.yes)
     do_link("internal", force=args.yes)
-    do_link("tests", force=args.yes)
+    # do_link("tests", force=args.yes)
     do_link("experimental", force=args.yes)
     do_link("util", force=args.yes)
     do_link("dashboard", force=args.yes)
