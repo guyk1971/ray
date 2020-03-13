@@ -101,7 +101,7 @@ if __name__ == "__main__":
         config={
             "env": "BreakoutNoFrameskip-v4"
             if args.use_vision_network else "CartPole-v0",
-            "num_gpus": 0,
+            "num_gpus": 1,
             "model": {
                 "custom_model": "keras_q_model"
                 if args.run == "DQN" else "keras_model"

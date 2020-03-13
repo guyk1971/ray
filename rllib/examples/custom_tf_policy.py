@@ -12,6 +12,8 @@ tf = try_import_tf()
 parser = argparse.ArgumentParser()
 parser.add_argument("--iters", type=int, default=200)
 parser.add_argument("--num-cpus", type=int, default=0)
+parser.add_argument("--num-gpus", type=int, default=1)
+
 
 
 def policy_gradient_loss(policy, model, dist_class, train_batch):
@@ -51,4 +53,5 @@ if __name__ == "__main__":
         config={
             "env": "CartPole-v0",
             "num_workers": 2,
+            "num_gpus":args.num_gpus,       # GuyK
         })
