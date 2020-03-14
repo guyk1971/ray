@@ -173,3 +173,6 @@ tools/prometheus*
 
 # ray project files
 project-id
+/my_scripts/notebooks/.ipynb_checkpoints/rllib_ppo-checkpoint.ipynb
+/my_scripts/notebooks/.ipynb_checkpoints/rllib_intro-checkpoint.ipynb
+/my_scripts/.ipynb_checkpoints/rllib_intro-checkpoint.ipynb
