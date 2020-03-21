@@ -1,7 +1,7 @@
 import logging
 
 from ray.rllib.agents.trainer import with_common_config
-from ray.rllib.agents.trainer_template import build_trainer
+from ray.rllib.agents.dqn.dqn import GenericOffPolicyTrainer
 from ray.rllib.contrib.dbcq.simple_dbcq_policy import SimpleDBCQPolicy
 from ray.rllib.optimizers import SyncReplayOptimizer
 from ray.rllib.optimizers.replay_buffer import ReplayBuffer
@@ -326,9 +326,9 @@ def execution_plan(workers, config):
     return StandardMetricsReporting(train_op, workers, config)
 
 
-GenericOffPolicyTrainer = build_trainer(
-    name="GenericOffPolicyAlgorithm",
-    default_policy=None,
+SimpleDBCQTrainer = GenericOffPolicyTrainer.with_updates(
+    name="DBCQ",
+    default_policy=SimpleDBCQPolicy,
     default_config=DEFAULT_CONFIG,
     validate_config=validate_config_and_setup_param_noise,
     get_initial_state=get_initial_state,
@@ -337,8 +337,3 @@ GenericOffPolicyTrainer = build_trainer(
     after_optimizer_step=update_target_if_needed,
     after_train_result=after_train_result,
     execution_plan=execution_plan)
-
-# DBCQTrainer = GenericOffPolicyTrainer.with_updates(
-#     name="DBCQ", default_policy=DQNTFPolicy, default_config=DEFAULT_CONFIG)
-
-SimpleDBCQTrainer = GenericOffPolicyTrainer.with_updates(name="DBCQ", default_policy=SimpleDBCQPolicy)

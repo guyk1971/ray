@@ -1,0 +1,11 @@
+cartpole-pg-random:
+    env: CartPole-v0
+    run: PG
+    config:
+        num_gpus: 1
+        output: "/home/guy/share/Data/MLA/ray/cartpole-pg"
+        output_max_file_size: 5000000
+    stop:
+        timesteps_total: 100000
+
+

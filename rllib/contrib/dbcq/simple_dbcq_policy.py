@@ -201,8 +201,8 @@ def setup_late_mixins(policy, obs_space, action_space, config):
     TargetNetworkMixin.__init__(policy, obs_space, action_space, config)
 
 
-SimpleQPolicy = build_tf_policy(
-    name="SimpleQPolicy",
+SimpleDBCQPolicy = build_tf_policy(
+    name="SimpleDBCQPolicy",
     get_default_config=lambda: ray.rllib.contrib.dbcq.dbcq.DEFAULT_CONFIG,          # need to change
     make_model=build_q_models,          # need to change
     action_sampler_fn=simple_sample_action_from_q_network,
