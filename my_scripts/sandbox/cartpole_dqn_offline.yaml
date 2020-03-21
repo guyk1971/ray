@@ -1,0 +1,8 @@
+cartpole-dqn-offline:
+    env: CartPole-v0
+    run: DQN
+    config:
+        num_gpus: 1
+        input: "/home/guy/share/Data/MLA/ray/cartpole-dqn"
+        input_evaluation: ['simulation']
+        explore: False
