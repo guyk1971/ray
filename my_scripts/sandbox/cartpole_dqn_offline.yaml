@@ -3,6 +3,14 @@ cartpole-dqn-offline:
     run: DQN
     config:
         num_gpus: 1
-        input: "/home/guy/share/Data/MLA/ray/cartpole-pg"
+        input: "/home/guy/share/Data/MLA/ray/cartpole-dqn-rnd"
         input_evaluation: ['simulation']
+        shuffle_buffer_size: 100
         explore: False
+        lr: 0.0001
+        hiddens: [256,512]
+        buffer_size: 100000
+        train_batch_size: 128
+    stop:
+        timesteps_total: 600000
+
