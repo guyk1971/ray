@@ -21,7 +21,7 @@ DEFAULT_CONFIG = with_common_config({
     # constraint threshold for the ratio between G(a|s) and G(a*|s) - indicated by tau in the paper
     "gen_tau": 0.3,
     # Whether to use dueling dqn
-    "dueling": True,
+    "dueling": False,
     # Postprocess model outputs with these hidden layers to compute the
     # state and action values. See also the model config in catalog.py.
     "hiddens": [256],
@@ -89,7 +89,7 @@ DEFAULT_CONFIG = with_common_config({
     # If not None, clip gradients during optimization at this value
     "grad_norm_clipping": 40,
     # How many steps of the model to sample before learning starts.
-    "learning_starts": 1000,
+    "learning_starts": 0,
     # Update the replay buffer with this many samples at once. Note that
     # this setting applies per-worker if num_workers > 1.
     "sample_batch_size": 4,

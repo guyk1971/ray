@@ -3,6 +3,6 @@ cartpole-dqn-offline:
     run: DQN
     config:
         num_gpus: 1
-        input: "/home/guy/share/Data/MLA/ray/cartpole-dqn-rnd"
+        input: "/home/guy/share/Data/MLA/ray/cartpole-pg"
         input_evaluation: ['simulation']
         explore: False
