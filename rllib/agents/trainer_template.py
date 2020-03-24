@@ -121,9 +121,13 @@ def build_trainer(name,
                                                   self.config["num_workers"])
             self.train_exec_impl = None
             self.optimizer = None
+            self.execution_plan = execution_plan
 
             if use_exec_api:
-                logger.warning("Using experimental execution plan impl.")
+                logger.warning(
+                    "The experimental distributed execution API is enabled "
+                    "for this algorithm. Disable this by setting "
+                    "'use_exec_api': False.")
                 self.train_exec_impl = execution_plan(self.workers, config)
             elif make_policy_optimizer:
                 self.optimizer = make_policy_optimizer(self.workers, config)
@@ -185,14 +189,16 @@ def build_trainer(name,
             state = Trainer.__getstate__(self)
             state["trainer_state"] = self.state.copy()
             if self.train_exec_impl:
-                state["train_exec_impl"] = self.train_exec_impl.metrics.save()
+                state["train_exec_impl"] = (
+                    self.train_exec_impl.shared_metrics.get().save())
             return state
 
         def __setstate__(self, state):
             Trainer.__setstate__(self, state)
             self.state = state["trainer_state"].copy()
             if self.train_exec_impl:
-                self.train_exec_impl.metrics.restore(state["train_exec_impl"])
+                self.train_exec_impl.shared_metrics.get().restore(
+                    state["train_exec_impl"])
 
     def with_updates(**overrides):
         """Build a copy of this trainer with the specified overrides.
