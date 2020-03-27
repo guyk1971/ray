@@ -8,7 +8,7 @@ torch, _ = try_import_torch()
 logger = logging.getLogger(__name__)
 
 try:
-    import tree
+    import sklearn.tree
 except (ImportError, ModuleNotFoundError) as e:
     logger.warning("`dm-tree` is not installed! Run `pip install dm-tree`.")
     raise e

@@ -5,10 +5,7 @@ It supports both traced and non-traced eager execution modes."""
 import functools
 import logging
 import numpy as np
-<<<<<<< HEAD
-from sklearn import tree
-=======
->>>>>>> b4030cdbbec071959de44c6468dea4481e78b744
+# from sklearn import tree
 
 from ray.util.debug import log_once
 from ray.rllib.evaluation.episode import _flatten_action
