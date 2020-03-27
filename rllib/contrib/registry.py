@@ -36,7 +36,7 @@ CONTRIBUTED_ALGORITHMS = {
     "contrib/RandomAgent": _import_random_agent,
     "contrib/MADDPG": _import_maddpg,
     "contrib/AlphaZero": _import_alphazero,
+    "contrib/DBCQ": _import_dbcq,
     "contrib/LinTS": _import_bandit_lints,
     "contrib/LinUCB": _import_bandit_linucb
-    "contrib/DBCQ": _import_dbcq,
 }
