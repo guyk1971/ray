@@ -5,7 +5,7 @@ RLlib is an open-source library for reinforcement learning that offers both high
 
 For an overview of RLlib, see the [documentation](http://ray.readthedocs.io/en/latest/rllib.html).
 
-For a shortened version see [intro notebook](../my_scripts/notebooks/rllib_intro.html)
+For a shortened version see [intro notebook](../my_scripts/notebooks/rllib-intro/rllib_intro.html)
 
 
 ## Development
@@ -36,8 +36,8 @@ once a while you'll want to update the repo. I assume I have 3 main branches to 
 
 once a while I want to update with the latest changes. this is the process:
 - `git checkout master`
-- `git pull upstream master`
-observe the changes
+- `git pull upstream master`  
+inspect the changes
 before merging to `my_scripts` I can check whether the merge will succeed by:  
 `git checkout my_scripts`  
 `git merge master --no-ff --no-commit`      
@@ -45,6 +45,13 @@ if there are conflicts you can fix them and then:
 `git commit`  
 `git push`
 
+After updating the repo, I need to sync the code:
+- Download the latest whl file and save in the project root directory.  
+- Copy the whl to remote server
+- `pip uninstall ray`
+- `pip install [ray_whl]`
+- Go back to Pycharm and upload the code to remote (following the deployment settings. it will update my 
+updated files in the installation location)
 after updating the most recent changes you'll have to install the latest whl file and then deploy the files again 
 (using pycharm).
 

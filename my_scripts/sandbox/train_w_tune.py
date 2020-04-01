@@ -7,10 +7,7 @@ from ray.tune.registry import register_env
 from my_scripts.sandbox.my_custom_envs import L2PEnv
 
 
-
-
 def parse_cmd_line():
-
     parser = argparse.ArgumentParser()
     parser.add_argument('input_yml', type=str, help='the input yaml file')
     args = parser.parse_args()
