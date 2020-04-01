@@ -80,7 +80,7 @@ def run_trial(args):
 
 if __name__ == "__main__":
     args = parse_cmd_line()
-    register_env("L2P-v0", lambda config: L2PEnv(config))
+    # register_env("L2P-v0", lambda config: L2PEnv(config))
     run_trial(args)
 
 

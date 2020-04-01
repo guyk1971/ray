@@ -44,6 +44,8 @@ def on_train_result(info):
     print("trainer.train() result: {} -> {} episodes".format(
         info["trainer"], info["result"]["episodes_this_iter"]))
     # you can mutate the result dict to add new fields to return
+    print('total timesteps so far: ',info['result']['timesteps_total'])
+
     info["result"]["callback_ok"] = True
 
 
@@ -61,13 +63,15 @@ if __name__ == "__main__":
     parser.add_argument("--num-iters", type=int, default=2000)
     args = parser.parse_args()
 
-    ray.init(local_mode=True)       # add local_mode=True for doing step-by-step
+    # ray.init(local_mode=True)       # add local_mode=True for doing step-by-step
+    ray.init()
     trials = tune.run(
         "PG",
         stop={
             "training_iteration": args.num_iters,
         },
         config={
+            "num_gpus":1,
             "env": "CartPole-v0",
             "callbacks": {
                 "on_episode_start": on_episode_start,
@@ -78,6 +82,8 @@ if __name__ == "__main__":
                 "on_postprocess_traj": on_postprocess_traj,
             },
         },
+        checkpoint_at_end=True,
+        checkpoint_freq=50,
         return_trials=True)
 
     # verify custom metrics for integration tests
