@@ -14,6 +14,9 @@ This section explains how to do remote development. we assume that we're using P
 ### Installation on remote server
 - `conda create -n rllib --clone rl20` - clone a virtual environment that includes tensorflow
 - Install the ray library  [latest snapshot whl build](https://ray.readthedocs.io/en/latest/installation.html#latest-snapshots-nightlies)
+- `pip install tensorboardX`
+- `pip install lz4`
+- `pip install dm-tree`
 
 **On the laptop**   
 - `git clone` the repository
