@@ -1,0 +1,16 @@
+cartpole-dqn-random:
+    env: Acrobot-v1
+    run: DQN
+    config:
+        num_gpus: 1
+        output: "/home/guy/share/Data/MLA/ray/acrobot-dqn-rnd"
+        exploration_config:
+          type: "EpsilonGreedy"
+          initial_epsilon: 1.0
+          final_epsilon: 1.0
+          epsilon_timesteps: 100000
+        output_max_file_size: 5000000
+    stop:
+        timesteps_total: 100000
+
+

@@ -1,4 +1,4 @@
-cartpole-pg-random:
+cartpole-pg-to-buf:
     env: CartPole-v0
     run: PG
     config:

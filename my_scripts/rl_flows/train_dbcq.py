@@ -27,6 +27,7 @@ from my_scripts.sandbox.my_custom_envs import L2PEnv
 def parse_cmd_line():
     parser = argparse.ArgumentParser()
     parser.add_argument('input_yml', type=str, help='the input yaml file')
+    parser.add_argument('-cf', '--ckpt_freq', type=int, default=0, help='save checkpoint every cf training iterations')
     args = parser.parse_args()
     return args
 
@@ -132,6 +133,8 @@ def run_trial(args):
         run_config["run"],
         stop=run_config["stop"],
         config=run_config["config"],
+        checkpoint_freq=args.ckpt_freq,
+        checkpoint_at_end=True,  # always save checkpoint at end
         return_trials=True)
     print('done')
     return

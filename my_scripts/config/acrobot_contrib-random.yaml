@@ -1,0 +1,12 @@
+acrobot-contrib-random:
+    env: Acrobot-v1
+    run: contrib/RandomAgent
+    config:
+        num_gpus: 1
+        output: "/home/guy/share/Data/MLA/ray/acrobot-contrib-rnd"
+        rollouts_per_iteration: 10
+        output_max_file_size: 5000000
+    stop:
+        timesteps_total: 100000
+
+

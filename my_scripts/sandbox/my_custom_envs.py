@@ -32,6 +32,7 @@ class SimpleCorridor(gym.Env):
         done = self.cur_pos >= self.end_pos
         return [self.cur_pos], 1 if done else 0, done, {}
 
+L2PEnv_def_cfg = {'obs_dim':7,'n_act':4}
 
 class L2PEnv(gym.Env):
     """

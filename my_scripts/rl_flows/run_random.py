@@ -26,13 +26,19 @@ from my_scripts.sandbox.my_custom_envs import L2PEnv
 
 def parse_cmd_line():
     parser = argparse.ArgumentParser()
-    parser.add_argument('input_yml', type=str, help='the input yaml file')
-    parser.add_argument('-cf', '--ckpt_freq', type=int, default=0, help='save checkpoint every cf training iterations')
+    parser.add_argument('agent', type=str, help='agent class e.g. DQN,random,PPO,DBCQ. if not random, need to provide checkpoint',default='random')
+    parser.add_argument('env',type=str,help='string of registered environment to run on')
+    parser.add_argument('--ckpt',type=str,help='path to checkpoint (ignored for random agent)',default=None)
+    parser.add_argument('-n',"--num-steps", type=int, default=1000, help='number of steps in the env to play with')
+    parser.add_argument('-o','--output',type=str,help='location of output file')
+    parser.add_argument("--gpu", action="store_true")
+    parser.add_argument("--num-workers", type=int, default=2)
+
     args = parser.parse_args()
     return args
 
 #########################################
-# callbacks
+#region  callbacks
 def on_episode_start(info):
     episode = info["episode"]
     print("+++++++++++ on_episode_start {0} with the following info: ++++++++++++".format(episode.episode_id))
@@ -82,7 +88,7 @@ supported_callbacks={'on_episode_start': on_episode_start,
                     'on_train_result': on_train_result,
                     'on_postprocess_traj': on_postprocess_traj }
 
-
+#endregion
 ##########################################
 # parse flow config
 def parse_flow_config(run_config):
@@ -103,21 +109,14 @@ def parse_flow_config(run_config):
         run_config['config'].update({'callbacks':sup_callback_dict})
     return
 
-
-
-
-
-
-
-
 def run_trial(args):
     print('loading trial config from ' + args.input_yml)
     with open(args.input_yml,'r') as yml_file:
         yml_config = yaml.load(yml_file,Loader=yaml.FullLoader)
     run_config = list(yml_config.values())[0]
-    # check that we loaded the correct configuration
-    if run_config['run'] != 'PPO':
-        print("wrong yaml file ! expecting DQN agent. Aborting")
+    # todo: check that we loaded the correct configuration
+    if run_config['run'] != 'contrib/RandomAgent':
+        print("wrong yaml file ! expecting contrib/RandomAgent agent. Aborting")
         return
 
     # continue running...
@@ -127,14 +126,12 @@ def run_trial(args):
     parse_flow_config(run_config)
 
     # init ray and start the trial
-    # ray.init(local_mode=True)     # uncomment in step-by-step
-    ray.init()
+    ray.init(local_mode=True)     # uncomment in step-by-step
+    # ray.init()
     trials = tune.run(
         run_config["run"],
         stop=run_config["stop"],
         config=run_config["config"],
-        checkpoint_freq=args.ckpt_freq,
-        checkpoint_at_end=True,  # always save checkpoint at end
         return_trials=True)
     print('done')
     return

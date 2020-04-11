@@ -1,0 +1,9 @@
+acrobot-dqn:
+    env: Acrobot-v1
+    run: DQN
+    config:
+        num_gpus: 1
+    stop:
+        timesteps_total: 100000
+
+
