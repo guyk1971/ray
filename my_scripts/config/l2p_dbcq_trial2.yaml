@@ -1,0 +1,20 @@
+l2p-dbcq-trial2:
+    env: L2P-v0
+    run: contrib/DBCQ
+    config:
+        num_gpus: 1
+        input: "/home/gkoren2/share/Data/MLA/L2P/michal/Batch_RL_2nd_trial/for_training/RL_trial2_exp_base_scale"
+        input_evaluation: ['is','wis']
+        shuffle_buffer_size: 100
+        explore: False
+        lr: 0.0001
+        hiddens: [16,32]
+        target_network_update_freq: 512
+        buffer_size: 1000000
+        train_batch_size: 128
+        gamma: 0.2
+    stop:
+        timesteps_total: 60000000
+
+
+

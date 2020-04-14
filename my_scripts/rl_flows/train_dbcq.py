@@ -7,6 +7,8 @@ from ray.tune.registry import register_env
 
 ############################
 # set the python path properly
+# note : when running from command line, the script should be run from project root. i.e.
+# project_root:$ python my_scripts/rl_flows/train_dbcq.py my_scripts/config/<config>.yaml
 import os
 import sys
 path_to_curr_file=os.path.realpath(__file__)
@@ -104,12 +106,6 @@ def parse_flow_config(run_config):
     return
 
 
-
-
-
-
-
-
 def run_trial(args):
     print('loading trial config from ' + args.input_yml)
     with open(args.input_yml,'r') as yml_file:
@@ -128,6 +124,7 @@ def run_trial(args):
 
     # init ray and start the trial
     # ray.init(local_mode=True)     # uncomment in step-by-step
+
     ray.init()
     trials = tune.run(
         run_config["run"],
