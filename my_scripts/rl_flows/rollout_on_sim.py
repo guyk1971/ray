@@ -9,6 +9,7 @@ from ray.tune.registry import register_env
 from ray.rllib.agents.registry import get_agent_class,CONTRIBUTED_ALGORITHMS,ALGORITHMS
 from ray.rllib.agents.trainer import with_common_config
 from ray.rllib.policy.tests.test_policy import TestPolicy
+from ray.rllib.policy.policy import ACTION_PROB
 from ray.rllib.evaluation.worker_set import WorkerSet
 from ray.rllib.utils.memory import ray_get_and_free
 from ray.rllib.policy.sample_batch import SampleBatch, DEFAULT_POLICY_ID
@@ -107,12 +108,13 @@ supported_callbacks={'on_episode_start': on_episode_start,
 #########################################
 #region random policy
 # see rollout_worker_custom_workflow.py for reference
-class RandomPolicy(TestPolicy):
+class DiscreteUniformRandomPolicy(TestPolicy):
     """a random policy written from scratch.
     You might find it more convenient to extend TF/TorchPolicy instead
     for a real policy.
     """
     def __init__(self, observation_space, action_space, config):
+        assert isinstance(action_space,gym.spaces.Discrete), 'DiscreteUniformRandomPolicy supporting only Discrete action space'
         super().__init__(observation_space, action_space, config)
 
     def compute_actions(self,
@@ -124,8 +126,8 @@ class RandomPolicy(TestPolicy):
                         episodes=None,
                         **kwargs):
         # return random actions
-        # todo : add action prob (uniform) as info
-        return [self.action_space.sample() for _ in obs_batch], [], {}
+        act_prob = [(1.0/self.action_space.n) for _ in obs_batch]       # uniform discrete
+        return [self.action_space.sample() for _ in obs_batch], [], {ACTION_PROB:act_prob}
 #endregion
 #########################################
 # parse flow config
@@ -166,7 +168,7 @@ def do_rollout_workset(env_creator, policy, config, n_timesteps):
         num_workers=config['num_workers'])
 
     # Broadcast weights to the policy evaluation workers
-    if not isinstance(policy,RandomPolicy):
+    if not isinstance(policy,DiscreteUniformRandomPolicy):
         # set weights to the local worker
         # weights = policy.get_weights()        # this is the straight forward way.
         # weights = ray.put(policy.get_weights())         # see sync_samples_optimizer.py line 48 (in step method)
@@ -265,12 +267,12 @@ def run_trial(args):
 
     env = env_creator(None)
     # init ray and start the trial
-    ray.init(local_mode=True)     # uncomment in step-by-step
-    # ray.init()
+    # ray.init(local_mode=True)     # uncomment in step-by-step
+    ray.init()
 
     # define the policy object
     if args.agent=='random':
-        policy = RandomPolicy(env.observation_space, env.action_space, {})
+        policy = DiscreteUniformRandomPolicy(env.observation_space, env.action_space, {})
     else:
         supported_algos = list(ALGORITHMS.keys())+list(CONTRIBUTED_ALGORITHMS.keys())
         # check that the agent exists
